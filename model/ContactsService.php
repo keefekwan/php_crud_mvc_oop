@@ -31,13 +31,59 @@ class ContactsService {
 		$this->contactsGateway = new ContactsGateway();
 	}
 
+	public function getContact($id) 
+	{
+		try {
+			$this->openDb();
+			$result = $this->contactsGateway->selectById($id);
+			$this->closeDb();
+			return $result;
+		} catch(Exception $e) {
+			$this->closeDb();
+			throw $e;
+		}
+		return $this->contactsGateway->find($id);
+	}
+
+	private function validateContactParams($name, $phone, $email, $address)
+	{
+		$errors = array();
+		if (!isset($name || empty($dbName))) {
+			$errors[] = 'Name is required';
+		}
+		if (empty($errors)) {
+			return;
+		}
+		throw new ValidationException($errors);
+	}
+
+	public function createNewContact($name, $phone, $email, $address)
+	{
+		try {
+			$this->openDb();
+			$this->validateContactParams($name, $phone, $email, $address);
+			$result = $this->contactsGateway->insert($name, $phone, $email, $address);
+			$this->closeDb();
+			return $result;
+		} catch(Exception $e) {
+			$this->closeDb();
+			throw $e;
+
+		}
+	}
 
 
-
+	public function deleteContact($id)
+	{
+		try {
+			$this->openDb();
+			$result = $this->contactsGateway->delete($id);
+			$this->closeDb();
+		} catch(Exception $e) {
+			$this->closeDb();
+			$throw $e;
+		}
+	}
 }
-
-$dbinput = new ContactsService;
-
-$sql = "INSERT INTO contacts";
 
 ?>
