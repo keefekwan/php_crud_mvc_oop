@@ -1,5 +1,7 @@
 <?php
 
+require_once '/model/contactsService.php'
+
 class ContactsController {
 
 	private $contactsService = null;
