@@ -72,7 +72,6 @@ class ContactsService {
 		}
 	}
 
-
 	public function deleteContact($id)
 	{
 		try {
