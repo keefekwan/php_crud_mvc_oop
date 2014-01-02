@@ -1,5 +1,8 @@
 <?php
 
+require_once 'ContactsGateway.php';
+require_once 'ValidationException.php';
+
 class ContactsService {
 
 	private $contactsGateway = null;
