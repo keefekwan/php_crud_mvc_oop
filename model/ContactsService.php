@@ -2,47 +2,39 @@
 
 require_once 'ContactsGateway.php';
 require_once 'ValidationException.php';
+require_once 'Database.php';
 
-class ContactsService {
+class ContactsService extends ContactsGateway
+{
 
 	private $contactsGateway = null;
-	private static $dbName = 'crud_mvc_oop';
-	private static $dbHost = 'localhost';
-	private static $dbUserName = 'root';
-	private static $dbPassword = 'abc123';
-
-	private function openDB() 
-		{
-			// One conenction through the whole application
-			if (null == self::$conn) {
-				try {
-					self::$conn = new PDO("mysql:host=".self::$dbHost.";"."dbname=".self::$dbName, self::$dbUsername, self::$dbPassword);
-				} catch(PDOException $e) {
-					die($e->getMessage());
-				}
-			}
-			return self::$conn;
-		}
-
-	private function closeDB()
-	{
-		self::$conn = null;
-	}
 
 	public function __construct()
 	{
 		$this->contactsGateway = new ContactsGateway();
 	}
 
+	public function getAllContacts($order) { 
+	    try { 
+	        self::connect();
+	        $res = $this->contactsGateway->selectAll($order); 
+	        self::disconnect();
+	        return $res; 
+	    } catch (Exception $e) { 
+	        self::disconnect();
+	        throw $e; 
+	    } 
+	} 
+
 	public function getContact($id) 
 	{
 		try {
-			$this->openDb();
+			self::connect();
 			$result = $this->contactsGateway->selectById($id);
-			$this->closeDb();
+			self::disconnect();
 			return $result;
 		} catch(Exception $e) {
-			$this->closeDb();
+			self::disconnect();
 			throw $e;
 		}
 		return $this->contactsGateway->find($id);
@@ -51,7 +43,7 @@ class ContactsService {
 	private function validateContactParams($name, $phone, $email, $address)
 	{
 		$errors = array();
-		if (!isset($name || empty($dbName))) {
+		if (!isset($name) || empty($name)) {
 			$errors[] = 'Name is required';
 		}
 		if (empty($errors)) {
@@ -63,13 +55,13 @@ class ContactsService {
 	public function createNewContact($name, $phone, $email, $address)
 	{
 		try {
-			$this->openDb();
+			self::connect();
 			$this->validateContactParams($name, $phone, $email, $address);
 			$result = $this->contactsGateway->insert($name, $phone, $email, $address);
-			$this->closeDb();
+			self::disconnect();
 			return $result;
 		} catch(Exception $e) {
-			$this->closeDb();
+			self::disconnect();
 			throw $e;
 
 		}
@@ -78,12 +70,12 @@ class ContactsService {
 	public function deleteContact($id)
 	{
 		try {
-			$this->openDb();
+			self::connect();
 			$result = $this->contactsGateway->delete($id);
-			$this->closeDb();
+			self::disconnect();
 		} catch(Exception $e) {
-			$this->closeDb();
-			$throw $e;
+			self::disconnect();
+			throw $e;
 		}
 	}
 }
