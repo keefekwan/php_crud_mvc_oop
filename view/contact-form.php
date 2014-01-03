@@ -9,9 +9,9 @@
 	<body>
 		<?php
 			if ($errors) {
-				echo '<ul>';
+				echo '<ul class="errors">';
 				foreach ($errors as $field => $error) {
-					echo '<li>' . htmlentities($error) . '</li>'
+					echo '<li>' . htmlentities($error) . '</li>';
 				}
 				echo '</ul>';
 			}
