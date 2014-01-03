@@ -4,7 +4,7 @@ require_once 'Database.php';
 class ContactsGateway extends Database 
 {
 
-	public function selectAll()
+	public function selectAll($order)
 	{
 		if (!isset($order)) {
 			$order = 'name';
@@ -15,7 +15,7 @@ class ContactsGateway extends Database
 		// $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 		$contacts = array();
-		while ($obj = $sql->fetch(PDO::FETCH_ASSOC)) {
+		while ($obj = $sql->fetch(PDO::FETCH_OBJ)) {
 		
 			$contacts[] = $obj;
 		}
@@ -47,16 +47,5 @@ class ContactsGateway extends Database
 		$sql->execute(array($id));
 	}
 }
-
-
-/** 
-* Testing class
-*/
-
-// $contact = new ContactsGateway;
-// $result = $contact->delete(7);
-
-// echo '<pre>';
-// var_dump($result);
 
 ?>
