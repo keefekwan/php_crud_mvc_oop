@@ -27,7 +27,7 @@
 	</head>
 	<body>
 		<div><a href="index.php?op=new">Add new contact</a></div>
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="contacts" border="0" cellpadding="0" cellspacing="0">
 				<thead>
 					<tr>
 						<th><a href="?orderby=name">Name</a></th>
