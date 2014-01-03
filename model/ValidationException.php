@@ -1,6 +1,7 @@
 <?php
 
-class ValidationException extends Exception { 
+class ValidationException extends Exception 
+{ 
       
     private $errors = NULL; 
       
@@ -8,8 +9,7 @@ class ValidationException extends Exception {
         parent::__construct("Validation error!"); 
         $this->errors = $errors; 
     } 
-      
-      
+            
     public function getErrors() { 
         return $this->errors; 
     } 
