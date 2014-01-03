@@ -7,7 +7,7 @@ class Database
     private static $dbUsername = 'root';
     private static $dbUserPassword = 'abc123';
      
-    private static $cont  = null;
+    private static $conn  = null;
      
     public function __construct() {
         // die('Init function is not allowed');
@@ -16,23 +16,23 @@ class Database
     public static function connect()
     {
        // One connection through whole application
-       if ( null == self::$cont )
+       if ( null == self::$conn )
        {     
         try
         {
-          self::$cont =  new PDO( "mysql:host=".self::$dbHost.";"."dbname=".self::$dbName, self::$dbUsername, self::$dbUserPassword); 
+          self::$conn =  new PDO( "mysql:host=".self::$dbHost.";"."dbname=".self::$dbName, self::$dbUsername, self::$dbUserPassword); 
         }
         catch(PDOException $e)
         {
           die($e->getMessage()); 
         }
        }
-       return self::$cont;
+       return self::$conn;
     }
      
     public static function disconnect()
     {
-        self::$cont = null;
+        self::$conn = null;
     }
 }
 
