@@ -1,8 +1,10 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/projects/crud_mvc_oop/model/Autoloader.php';
+require_once ROOT_PATH . '/model/ContactsService.php';
 
-require_once '/model/contactsService.php'
 
-class ContactsController {
+class ContactsController 
+{
 
 	private $contactsService = null;
 
@@ -30,10 +32,10 @@ class ContactsController {
 			} elseif ($op == 'show') {
 				$this->showContact();
 			} else {
-				$this->showError("Application error", $e->getMessage());
+				$this->showError("Page not found", "Page for operation " . $op . " was not found!");
 			}
 		} catch(Exception $e) {
-
+			$this->showError("Application error", $e->getMessage());
 		}
 	}
 
@@ -41,7 +43,7 @@ class ContactsController {
 	{
 		$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : null;
 		$contacts = $this->contactsService->getAllContacts($orderby);
-		include 'view/contacts.php';
+		include ROOT_PATH . '/view/contacts.php';
 	}
 
 	public function saveContact()
@@ -55,10 +57,11 @@ class ContactsController {
 
 		$errors = array();
 
-		if (isset('form-submitted')) {
+		if (isset($_POST['form-submitted'])) {
+
 			$name 	 = isset($_POST['name']) 	? $_POST['name'] 	: null;
 			$phone 	 = isset($_POST['phone']) 	? $_POST['phone'] 	: null;
-			$email 	 = isset($_POST['mail']) 	? $_POST['email'] 	: null;
+			$email 	 = isset($_POST['email']) 	? $_POST['email'] 	: null;
 			$address = isset($_POST['address']) ? $_POST['address'] : null;			
 		
 			try {
@@ -69,7 +72,8 @@ class ContactsController {
 				$errors = $e->getErrors();
 			}
 		}
-		include 'view/contact-form.php';
+		// include 'view/contact-form.php';
+		include ROOT_PATH . '/view/contact-form.php';
 	}
 
 	public function deleteContact()
@@ -92,12 +96,12 @@ class ContactsController {
 		}
 		$contact = $this->contactsService->getContact($id);		
 
-		include 'view/contact.php';
+		include ROOT_PATH . 'view/contact.php';
 	}
 
 	public function showError($title, $message)
 	{
-		include 'view/error.php';
+		include ROOT_PATH . 'view/error.php';
 	}
 }
 
