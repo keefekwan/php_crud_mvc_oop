@@ -23,10 +23,13 @@ class ContactsController
 		$op = isset($_GET['op']) ? $_GET['op'] : null;
 
 		try {
+
 			if (!$op || $op == 'list') {
 				$this->listContacts();
 			} elseif ($op == 'new') {
 				$this->saveContact();				
+			} elseif ($op == 'edit') {
+				$this->editContact();
 			} elseif ($op == 'delete') {
 				$this->deleteContact();
 			} elseif ($op == 'show') {
@@ -44,6 +47,7 @@ class ContactsController
 		$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : null;
 		$contacts = $this->contactsService->getAllContacts($orderby);
 		include ROOT_PATH . '/view/contacts.php';
+
 	}
 
 	public function saveContact()
@@ -59,10 +63,10 @@ class ContactsController
 
 		if (isset($_POST['form-submitted'])) {
 
-			$name 	 = isset($_POST['name']) 	? $_POST['name'] 	: null;
-			$phone 	 = isset($_POST['phone']) 	? $_POST['phone'] 	: null;
-			$email 	 = isset($_POST['email']) 	? $_POST['email'] 	: null;
-			$address = isset($_POST['address']) ? $_POST['address'] : null;			
+			$name 	 = isset($_POST['name']) 	? trim($_POST['name']) 	  : null;
+			$phone 	 = isset($_POST['phone']) 	? trim($_POST['phone'])   : null;
+			$email 	 = isset($_POST['email']) 	? trim($_POST['email'])   : null;
+			$address = isset($_POST['address']) ? trim($_POST['address']) : null;			
 		
 			try {
 				$this->contactsService->createNewContact($name, $phone, $email, $address);
@@ -74,6 +78,37 @@ class ContactsController
 		}
 		// include 'view/contact-form.php';
 		include ROOT_PATH . '/view/contact-form.php';
+	}
+
+	public function editContact()
+	{
+		$title  = "Edit Contact";
+
+		$name 	 = '';
+		$phone 	 = '';
+		$email 	 = '';
+		$address = '';
+		$id      = $_GET['id'];
+
+		$errors = array();
+
+		if (isset($_POST['form-submitted'])) {
+
+			$name 	 = isset($_POST['name']) 	? trim($_POST['name']) 	  : null;
+			$phone 	 = isset($_POST['phone']) 	? trim($_POST['phone'])   : null;
+			$email 	 = isset($_POST['email']) 	? trim($_POST['email'])   : null;
+			$address = isset($_POST['address']) ? trim($_POST['address']) : null;
+					
+			try {
+				$this->contactsService->editContact($name, $phone, $email, $address, $id);
+				$this->redirect('index.php');
+				return;
+			} catch(ValidationException $e) {
+				$errors = $e->getErrors();
+			}
+		}
+		// Includes in the view of the form with getContact($id)
+		$this->showEditContact();
 	}
 
 	public function deleteContact()
@@ -91,12 +126,28 @@ class ContactsController
 	{
 		$id = isset($_GET['id']) ? $_GET['id'] : null;
 
+		$errors = array();
+		
 		if (!$id) {
 			throw new Exception('Internal error');
 		}
 		$contact = $this->contactsService->getContact($id);		
 
 		include ROOT_PATH . 'view/contact.php';
+	}
+
+	public function showEditContact() 
+	{
+		$id = isset($_GET['id']) ? $_GET['id'] : null;
+				
+		$errors = array();
+		
+		if (!$id) {
+			throw new Exception('Internal error');
+		}
+		$contact = $this->contactsService->getContact($id);		
+				
+		include ROOT_PATH . 'view/contact-form-edit.php';
 	}
 
 	public function showError($title, $message)
