@@ -37,14 +37,14 @@ class ContactsService extends ContactsGateway
 			self::disconnect();
 			throw $e;
 		}
-		return $this->contactsGateway->find($id);
+		return $this->contactsGateway->selectById($id);
 	}
 
 	private function validateContactParams($name, $phone, $email, $address)
 	{
 		$errors = array();
-		if (!isset($name) || empty($name)) {
-			$errors[] = 'Name is required';
+		if (!isset($name) || empty($name) && !isset($phone) || empty($phone) && !isset($email) || empty($email) && !isset($address) || empty($address)) {
+			$errors[] = 'All fields must be filled in';
 		}
 		if (empty($errors)) {
 			return;
@@ -64,6 +64,18 @@ class ContactsService extends ContactsGateway
 			self::disconnect();
 			throw $e;
 
+		}
+	}
+
+	public function editContact($name, $phone, $email, $address, $id)
+	{
+		try {
+			self::connect();
+			$result = $this->contactsGateway->edit($name, $phone, $email, $address, $id);
+			self::disconnect();
+		}catch(Exception $e) {
+			self::disconnect();
+			throw $e;
 		}
 	}
 
