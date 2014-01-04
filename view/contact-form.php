@@ -7,6 +7,7 @@
 		</title>
 	</head>
 	<body>
+		<h3>Add New Contact</h3>
 		<?php
 			if ($errors) {
 				echo '<ul class="errors">';
@@ -33,6 +34,7 @@
 
 			<input type="hidden" name="form-submitted" value="1">
 			<input type="submit" value="Submit">
+			<button type="button" onclick="history.back();">Cancel</button>
 		</form>
 	</body>
 </html>
