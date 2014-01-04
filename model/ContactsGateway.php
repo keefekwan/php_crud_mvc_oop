@@ -40,6 +40,13 @@ class ContactsGateway extends Database
 		$result = $sql->execute(array($name, $phone, $email, $address));
 	}
 
+	public function edit($name, $phone, $email, $address, $id)
+	{
+		$pdo = Database::connect();
+		$sql = $pdo->prepare("UPDATE contacts set name = ?, phone = ?, email = ?, address = ? WHERE id = ? LIMIT 1");
+		$result = $sql->execute(array($name, $phone, $email, $address, $id));
+	}
+
 	public function delete($id)
 	{
 		$pdo = Database::connect();
