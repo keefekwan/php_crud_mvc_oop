@@ -10,6 +10,7 @@
 			table.contacts thead {
 				background-color: #eee;
 				text-align: left;
+
 			}
 			table.contacts thead th {
 				border: solid 1px #fff;
@@ -26,7 +27,8 @@
 		</style>
 	</head>
 	<body>
-		<div><a href="index.php?op=new">Add new contact</a></div>
+		<h3>CRUD OOP with MVC</h3>
+		<div><a href="index.php?op=new">Add new contact</a></div><br>
 			<table class="contacts" border="0" cellpadding="0" cellspacing="0">
 				<thead>
 					<tr>
@@ -34,6 +36,7 @@
 						<th><a href="?orderby=phone">Phone</a></th>
 						<th><a href="?orderby=email">Email</a></th>
 						<th><a href="?orderby=address">Address</a></th>
+						<th>&nbsp</th>
 						<th>&nbsp</th>
 					</tr>
 				</thead>
@@ -45,7 +48,8 @@
 							<td><?php echo htmlentities($contact->phone); ?></td>
 							<td><?php echo htmlentities($contact->email); ?></td>
 							<td><?php echo htmlentities($contact->address); ?></td>
-							<td><a href="index.php?op=delete&id=<?php echo $contact->id; ?>">delete</a></td>
+							<td><a href="index.php?op=edit&id=<?php echo $contact->id; ?>">edit</a></td>
+							<td><a href="index.php?op=delete&id=<?php echo $contact->id; ?>" onclick="return confirm('Are you sure you want to delete?');">delete</a></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>		
