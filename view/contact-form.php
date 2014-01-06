@@ -34,7 +34,7 @@
 
 			<input type="hidden" name="form-submitted" value="1">
 			<input type="submit" value="Submit">
-			<button type="button" onclick="history.back();">Cancel</button>
+			<button type="button" onclick="location.href='index.php'">Cancel</button>
 		</form>
 	</body>
 </html>
