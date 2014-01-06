@@ -43,9 +43,18 @@ class ContactsService extends ContactsGateway
 	private function validateContactParams($name, $phone, $email, $address)
 	{
 		$errors = array();
-		if (!isset($name) || empty($name) && !isset($phone) || empty($phone) && !isset($email) || empty($email) && !isset($address) || empty($address)) {
-			$errors[] = 'All fields must be filled in';
-		}
+		if ( !isset($name) || empty($name) ) { 
+			    $errors[] = 'Name is required'; 
+			}
+			if ( !isset($phone) || empty($phone) ) { 
+			    $errors[] = 'Phone number is required'; 
+			}
+			if ( !isset($email) || empty($email) ) { 
+			    $errors[] = 'Email address is required'; 
+			}
+			if ( !isset($address) || empty($address) ) { 
+			    $errors[] = 'Address field is required'; 
+			}
 		if (empty($errors)) {
 			return;
 		}
