@@ -92,6 +92,8 @@ class ContactsController
 
 		$errors = array();
 
+		$contact = $this->contactsService->getContact($id);		
+		
 		if (isset($_POST['form-submitted'])) {
 
 			$name 	 = isset($_POST['name']) 	? trim($_POST['name']) 	  : null;
@@ -107,8 +109,8 @@ class ContactsController
 				$errors = $e->getErrors();
 			}
 		}
-		// Includes in the view of the form with getContact($id)
-		$this->showEditContact();
+		// Include in the view of the edit form
+		include ROOT_PATH . 'view/contact-form-edit.php';
 	}
 
 	public function deleteContact()
@@ -134,20 +136,6 @@ class ContactsController
 		$contact = $this->contactsService->getContact($id);		
 
 		include ROOT_PATH . 'view/contact.php';
-	}
-
-	public function showEditContact() 
-	{
-		$id = isset($_GET['id']) ? $_GET['id'] : null;
-				
-		$errors = array();
-		
-		if (!$id) {
-			throw new Exception('Internal error');
-		}
-		$contact = $this->contactsService->getContact($id);		
-				
-		include ROOT_PATH . 'view/contact-form-edit.php';
 	}
 
 	public function showError($title, $message)
